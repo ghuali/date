@@ -24,20 +24,31 @@ class Date:
 
         
 
-
+        print(__name__)
         return resultado
 
     @staticmethod
     def days_in_month(month: int, year: int) -> int:
         days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-        if self.is_leap_year(year) and month == 2:
+        if Date.is_leap_year(year) and month == 2:
             return 29
         else:
             return days[month-1]
 
-    def get_delta_days(self) -> int:
+    def get_delta_days(self,) -> int:
         '''Número de días transcurridos desde el 1-1-1900 hasta la fecha'''
-        ...
+        diastotal = 0
+        for year in range(1900,self.year):
+            total_days += 366 if self.is_leap_year(year) else 365
+
+        for month in range(1,self.month):
+            diastotal += self.days_in_month(month,self.year)
+
+        diastotal += self.day -1 
+
+        return diastotal
+
+        
 
     @property
     def weekday(self) -> int:
