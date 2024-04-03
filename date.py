@@ -53,7 +53,7 @@ class Date:
     @property
     def weekday(self) -> int:
         '''Día de la semana de la fecha (0 para domingo, ..., 6 para sábado).'''
-        ...
+        Date.Today
 
     @property
     def is_weekend(self) -> bool:
