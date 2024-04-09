@@ -9,24 +9,31 @@ class Date:
         Ojo con los años bisiestos.
         El 1-1-1900 fue lunes.
         '''
-        self.day = day
-        self.month = month
-        self.year = year
+        if year < 1900:
+            self.year = 1900
+        elif year > 2050:
+            self.year = 1900
+        else:
+            self.year = year
+        if month < 1:
+            self.month = 1
+        elif month > 12:
+            self.month = 1
+        else:
+            self.month = month
+        max_days = self.days_in_month(self.month, self.year)
+        if day < 1:
+            self.day = 1
+        elif day > max_days:
+            self.day = 1
+        else:
+            self.day = day
 
     @staticmethod
     def is_leap_year(year: int) -> bool:
-        resultado = False
-
-        if year % 4 == 0 and year % 100 != 0:
-            resultado = True
-        elif year % 400 == 0:
-            resultado = True
+        return (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0)
 
         
-
-        print(__name__)
-        return resultado
-
     @staticmethod
     def days_in_month(month: int, year: int) -> int:
         days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
