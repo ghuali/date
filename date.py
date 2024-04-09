@@ -66,32 +66,90 @@ class Date:
 
     @property
     def is_weekend(self) -> bool:
-        ...
+        if self.weekday in {6, 0}:
+            return True
+        else:
+            return False
+
 
     @property
     def short_date(self) -> str:
         '''02/09/2003'''
-        ...
+        if self.day >= 10:
+            dia_str = str(self.day)
+        else:
+            dia_str = "0" + str(self.day)
+        
+        if self.month >= 10:
+            month_str = str(self.month)
+        else:
+            month_str = "0" + str(self.month)
+        
+        return dia_str + "/" + month_str + "/" + str(self.year)
 
     def __str__(self):
         '''MARTES 2 DE SEPTIEMBRE DE 2003'''
-        ...
+        dias_semana = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"]
+        dia_semana = dias_semana[self.weekday]
+        nombres_month = [
+            "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+            "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+        ]
+        nombre_month = nombres_month[self.month - 1]
+        return f"{dia_semana.upper()} {self.day} DE {nombre_month.upper()} DE {self.year}"
 
     def __add__(self, days: int) -> Date:
         '''Sumar un número de días a la fecha'''
-        ...
+        day = self.day + days
+        month = self.month
+        year = self.year
+        while day > self.days_in_month(month, year):
+            day -= self.days_in_month(month, year)
+            month += 1
+            if month > 12:
+                month = 1
+                year += 1
+        return Date(day, month, year)
 
     def __sub__(self, other: Date | int) -> int | Date:
         '''Dos opciones:
         1) Restar una fecha a otra fecha -> Número de días
         2) Restar un número de días la fecha -> Nueva fecha'''
-        ...
+        if isinstance(other, Date):
+            return self.get_delta_days() - other.get_delta_days()
 
+        elif isinstance(other, int):
+            day = self.day - other
+            month = self.month
+            year = self.year
+            
+            while day < 1:
+                month -= 1
+                if month < 1:
+                    month = 12
+                    year -= 1
+                day += self.days_in_month(month, year)
+            
+            return Date(day, month, year)
     def __lt__(self, other) -> bool:
-        ...
-
+        if self.day < other.day:
+            return True
+        if self.month < other.month:
+            return True
+        if self.year < other.year:
+            return True
     def __gt__(self, other) -> bool:
-        ...
+        if self.day > other.day:
+            return True
+        if self.month > other.month:
+            return True
+        if self.year > other.year:
+            return True
 
     def __eq__(self, other) -> bool:
-        ...
+        if self.day == other.day:
+            return True
+        if self.month == other.month:
+            return True
+        if self.year == other.year:
+            return True
